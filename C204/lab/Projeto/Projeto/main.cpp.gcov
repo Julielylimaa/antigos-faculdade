@@ -1,0 +1,181 @@
+        -:    0:Source:main.cpp
+        -:    0:Graph:main.gcno
+        -:    0:Data:main.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <bits/stdc++.h>
+        -:    2:
+        -:    3:using namespace std;
+        -:    4:
+        -:    5:// struct usada para declarar os pontos para formação dos vetores
+        -:    6:struct ponto
+        -:    7:{
+        -:    8:	float x;
+        -:    9:	float y;
+        -:   10:};
+        -:   11:typedef ponto vetor;
+        -:   12:
+        -:   13:// struct usada para criar as retas com os pontos
+        -:   14:struct reta
+        -:   15:{
+        -:   16:	ponto A;
+        -:   17:	ponto B;
+        -:   18:};
+        -:   19:typedef reta segmento;
+        -:   20:
+        -:   21:// função usada para criar o vetor
+       27:   22:vetor cria_vetor(ponto A, ponto B)
+        -:   23:{
+        -:   24:	vetor AB;
+        -:   25:
+       27:   26:	AB.x = B.x - A.x;
+       27:   27:	AB.y = B.y - A.y;
+        -:   28:
+       27:   29:	return AB;
+        -:   30:}
+        -:   31:
+        -:   32:// função que retorna o comprimento do vetor
+       27:   33:float distancia_Vetor(vetor A)
+        -:   34:{
+        -:   35:	float comprimento_Vetor;
+        -:   36:	float x;
+        -:   37:
+       27:   38:	x = pow(A.x, 2) + pow(A.y, 2);
+       27:   39:	comprimento_Vetor = sqrt(x);
+        -:   40:
+       27:   41:	return comprimento_Vetor;
+        -:   42:}
+        -:   43:
+        -:   44:// função que retorna o ponto com a menor distância de outro ponto origem
+        9:   45:int menor_distancia(ponto origem, ponto destinos[], int numpassageiros)
+        -:   46:{
+        -:   47:	float menordistancia; // guarda o valor da menor distância
+        -:   48:	int menor; // guarda o ponto com a menor distância
+        9:   49:	int i = 0; // variável auxiliar
+        -:   50:	vetor distancias; // guarda os vetores que serão criados para encontrar a menor distância
+        -:   51:	float comprimento; // guarda o comprimento dos vetores
+        -:   52:
+        -:   53:	// atribuindo valores iniciais para as variáveis
+        9:   54:	distancias = cria_vetor(origem, destinos[i]);
+        9:   55:	comprimento = distancia_Vetor(distancias);
+        9:   56:	menordistancia = comprimento;
+        9:   57:	menor = i;
+        -:   58:
+        -:   59:	// percorrendo o vetor de destinos
+       27:   60:	for(int i = 1; i < numpassageiros; i++)
+        -:   61:	{
+       18:   62:		distancias = cria_vetor(origem, destinos[i]);
+       18:   63:		comprimento = distancia_Vetor(distancias);
+        -:   64:
+        -:   65:		// comparando as distâncias para encontrar a menor
+       18:   66:		if(comprimento < menordistancia)
+        -:   67:		{
+        7:   68:			menordistancia = comprimento;
+        7:   69:			menor = i;
+        -:   70:		}
+        -:   71:	}
+        -:   72:
+        -:   73:	// retornando o ponto com a menor distância
+        9:   74:	return menor + 1;
+        -:   75:}
+        -:   76:
+        1:   77:int main()
+        -:   78:{
+        -:   79:	ponto origem; // ponto que armazena as posições do motorista ao longo do percurso
+        -:   80:	int num_passageiros; // armazena o número de possíveis passageiros na região
+        -:   81:	int aux; // variável auxiliar
+        -:   82:	int npassageiro[3]; // armazena a ordem de busca dos passageiros
+        -:   83:
+        -:   84:	// entrando com a posição inicial do motorista
+        1:   85:	cout << "Entre com a posicao do motorista: " << endl;
+        1:   86:	cin >> origem.x >> origem.y;
+        -:   87:
+        -:   88:	// entrando com o número de possíveis passageiros na região
+        1:   89:	cout << "Entre com o numero de possiveis passageiros proximos (minimo 3): " << endl;
+        1:   90:	cin >> num_passageiros;
+        -:   91:
+        -:   92:	// while para aceitar apenas um valor igual ou maior que 3
+        4:   93:	while(num_passageiros < 3)
+        -:   94:	{
+        2:   95:		cout << "numero invalido !" << endl << "entre com um novo valor: " << endl;
+        2:   96:		cin >> num_passageiros;
+        -:   97:	}
+        -:   98:
+        1:   99:	ponto coordenadas_passageiros[num_passageiros]; // armazena a posição dos possíveis passageiros
+        -:  100:	ponto coordenadaspassageiros2[3]; // armazena a posição dos passageiros selecionados para a viagem
+        -:  101:	ponto coordenadas_destinos[3]; // armazena a posição dos destinos dos passageiros selecionados
+        -:  102:
+        -:  103:	// entrando com a posição dos possíveis passageiros
+        4:  104:	for(int i = 0; i < num_passageiros; i++)
+        -:  105:	{
+        3:  106:		cout << "Entre com a posicao do passageiro " << i + 1 << ": " << endl;
+        3:  107:		cin >> coordenadas_passageiros[i].x >> coordenadas_passageiros[i].y;
+        -:  108:	}
+        -:  109:
+        -:  110:	// calculando quais os 3 passageiros mais próximos do motorista e mostrando quais são eles
+        1:  111:	cout << endl << "passageiros selecionados: ";
+        4:  112:	for(int z = 0; z < 3; z++)
+        -:  113:	{
+        -:  114:		// encontrando o passageiro mais próximo e mostrando ele
+        3:  115:		aux = menor_distancia(origem, coordenadas_passageiros, num_passageiros);
+        3:  116:		cout << aux << " ";
+        -:  117:
+        -:  118:		// guardando a posição do passageiro
+        3:  119:		coordenadaspassageiros2[z].x = coordenadas_passageiros[aux - 1].x;
+        3:  120:		coordenadaspassageiros2[z].y = coordenadas_passageiros[aux - 1].y;
+        -:  121:
+        -:  122:		// atribuindo um valor alto para a posição do passageiro encontrado para ele não ser selecionado novamente na função
+        3:  123:		coordenadas_passageiros[aux - 1].x = 10000;
+        3:  124:		coordenadas_passageiros[aux - 1].y = 10000;
+        -:  125:
+        -:  126:		// guardando quais os passageiros selecionados
+        3:  127:		npassageiro[z] = aux;
+        -:  128:	}
+        -:  129:
+        1:  130:	cout << endl << endl;
+        -:  131:
+        -:  132:	// entrando com o destino dos passageiros selecionados
+        4:  133:	for(int v = 0; v < 3; v++)
+        -:  134:	{
+        3:  135:		cout << "Entre com o destino do passageiro " << npassageiro[v] << ": " << endl;
+        3:  136:		cin >> coordenadas_destinos[v].x >> coordenadas_destinos[v].y;
+        -:  137:	}
+        -:  138:
+        -:  139:	// calculando o melhor trajeto para pegar os passageiros e mostrando ele
+        1:  140:	cout << endl << "motorista " << endl;
+        4:  141:	for(int f = 0; f < 3; f++)
+        -:  142:	{
+        -:  143:		// achando o passageiro com a menor distância da origem
+        3:  144:		aux = menor_distancia(origem, coordenadaspassageiros2, 3);
+        -:  145:
+        -:  146:		// mostrando qual é o passageiro
+        3:  147:		cout << " --> passageiro " << npassageiro[aux - 1] << endl;
+        -:  148:
+        -:  149:		// definindo a posição do passageiro como origem
+        3:  150:		origem = coordenadaspassageiros2[aux - 1];
+        -:  151:
+        -:  152:		// atribuindo um valor alto para a posição do passageiro para ele não ser selecionado novamente na função
+        3:  153:		coordenadaspassageiros2[aux - 1].x = 10000;
+        3:  154:		coordenadaspassageiros2[aux - 1].y = 10000;
+        -:  155:	}
+        -:  156:
+        -:  157:	// calculando o melhor trajeto para deixar os passageiros nos destinos e mostrando ele
+        1:  158:	cout << endl << "indo para os destinos" << endl << endl;
+        4:  159:	for(int j = 0; j < 3; j++)
+        -:  160:	{
+        -:  161:		// achando o destino com a menor distância da origem
+        3:  162:		aux = menor_distancia(origem, coordenadas_destinos, 3);
+        -:  163:
+        -:  164:		// mostrando qual é o destino
+        3:  165:		cout << " --> destino do passageiro " << npassageiro[aux - 1] << endl;
+        -:  166:
+        -:  167:		// definindo a posição do destino como origem
+        3:  168:		origem = coordenadas_destinos[aux - 1];
+        -:  169:
+        -:  170:		// atribuindo um valor alto para a posição do destino para ele não ser selecionado novamente na função
+        3:  171:		coordenadas_destinos[aux - 1].x = 10000;
+        3:  172:		coordenadas_destinos[aux - 1].y = 10000;
+        -:  173:	}
+        -:  174:
+        1:  175:	return 0;
+        3:  176:}
